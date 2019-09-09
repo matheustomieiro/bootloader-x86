@@ -16,7 +16,7 @@ start:
 .L3:
 	jmp	.L3
 here:
-	db	"Hello world!"
+	db	"Prado, o negocio pelo menos ta progredindo..."
 
 	times 510 - ($-$$) db 0	;; Pad with zeros
 	
