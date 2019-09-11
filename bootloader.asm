@@ -5,9 +5,11 @@ start:
 	mov si, text_string
 	call print_string
 	call scan_char
+	cmp al, 0x41
+	je $
 	mov si, text_string
 	call print_string
-
+	jmp $
 ;;Function to print a string
 ;;args: si - string to print
 print_string:
