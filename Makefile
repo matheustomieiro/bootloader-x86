@@ -18,3 +18,6 @@ clean:
 
 clean_all:
 	rm -rf image.flp temp.bin boot.iso
+
+0:	all	clean
+	echo "Finished"
