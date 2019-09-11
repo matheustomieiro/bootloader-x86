@@ -19,5 +19,5 @@ clean:
 clean_all:
 	rm -rf image.flp temp.bin boot.iso
 
-0:	all	clean
+0:	clean_all all
 	echo "Finished"
