@@ -10,26 +10,67 @@ start:
 	jmp start
 
 ROOM1:
-	mov ah, 0x01
+	mov ah, 0x00
 	mov bh, 0x00
-	mov ch, 0x00
-	mov dh, 0x00
+	mov ch, 0x01
+	mov dh, 0x01
 	call print_room
 	call read_direction
-	cmp ah, 0x00
+	cmp ah, 0x02
+	je ROOM3
+	cmp ah, 0x03
 	je ROOM2
 	jmp ROOM1
 
 ROOM2:
 	mov ah, 0x00
-	mov bh, 0x00
+	mov bh, 0x01
 	mov ch, 0x00
 	mov dh, 0x00
 	call print_room
 	call read_direction
-	cmp ah, 0x02
+	cmp ah, 0x01
 	je ROOM1
-	jmp END
+	jmp ROOM2
+
+ROOM3:
+	mov ah, 0x01
+	mov bh, 0x01
+	mov ch, 0x00
+	mov dh, 0x00
+	call print_room
+	call read_direction
+	cmp ah, 0x00
+	je ROOM1
+	cmp ah, 0x01
+	je ROOM4
+	jmp ROOM3
+
+ROOM4:
+	mov ah, 0x01
+	mov bh, 0x00
+	mov ch, 0x00
+	mov dh, 0x01
+	call print_room
+	call read_direction
+	cmp ah, 0x00
+	je ROOM5
+	cmp ah, 0x03
+	je ROOM3
+	jmp ROOM4
+
+ROOM5:
+	mov ah, 0x01
+	mov bh, 0x00
+	mov ch, 0x01
+	mov dh, 0x00
+	call print_room
+	call read_direction
+	cmp ah, 0x00
+	je END
+	cmp ah, 0x02
+	je ROOM4
+	jmp ROOM5
 
 read_direction:
 	call scan_char
@@ -54,7 +95,7 @@ read_direction:
 .wc:
 	mov ah, 0x03
 	jmp end_read
-end_read:	
+end_read:
 	ret
 
 ;; Fuction to print a room
@@ -64,28 +105,26 @@ print_room:
 	je .north_open
 	mov si, str_north
 	call print_string
+.west:
+	cmp dh, 0x01
+	je .west_open
+	mov si, str_west
+	call print_string
 .east:
 	cmp bh, 0x01
 	je .east_open
 	mov si, str_east
 	call print_string
-	jmp .south
 .south:
 	cmp ch, 0x01
 	je .south_open
 	mov si, str_south
 	call print_string
 	ret
-.west:
-	cmp dh, 0x01
-	je .west_open
-	mov si, str_west
-	call print_string
-	jmp .east
 .north_open:
 	mov si, str_north_open
 	call print_string
-	jmp .east
+	jmp .west
 .east_open:
 	mov si, str_east_open
 	call print_string
@@ -93,11 +132,11 @@ print_room:
 .south_open:
 	mov si, str_south_open
 	call print_string
-	jmp .west
+	ret
 .west_open:
 	mov si, str_west_open
 	call print_string
-	ret
+	jmp .east
 
 ;;Function to print a string
 ;;args: si - string to print
@@ -118,17 +157,17 @@ scan_char:
 	ret
 
 start_string db 'Pressione SPACE para iniciar!', 0x0a, 0x0d, 0
-str_north db '-------', 0
-str_north_open db '---N---', 0
-str_east db ' E', 0
-str_east_open db ' EO', 0
-str_south db ' S', 0x0a, 0x0d, 0
-str_south_open db ' SO', 0x0a, 0x0d, 0
-str_west db ' W', 0
-str_west_open db ' WO', 0
+str_north db '   -', 0x0a, 0x0d, 0
+str_north_open db '   N', 0x0a, 0x0d, 0
+str_east db '   |', 0x0a, 0x0d, 0
+str_east_open db '   E', 0x0a, 0x0d, 0
+str_south db '   -', 0x0a, 0x0d , 0x0a, 0x0d, 0
+str_south_open db '   S', 0x0a, 0x0d, 0x0a, 0x0d,0
+str_west db '|  ', 0
+str_west_open db 'W  ', 0
+end_message db 'FIM DE JOGO!', 0x0a, 0x0d, 0
 
 END:
-	end_message db 'FIM DE JOGO!', 0
 	mov si, end_message
 	call print_string
 	jmp start
