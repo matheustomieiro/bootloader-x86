@@ -1,7 +1,14 @@
 	BITS 16
-start:
-	mov ax, 07C0h
+	org 0x7c00
+	xor ax, ax
 	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
+	jmp start
+start:
+	mov ah, 0xe
+	mov bx, 0
 	mov si, start_string
 	call print_string
 	call scan_char
@@ -144,7 +151,7 @@ print_string:
 	mov ah, 0eh
 .repeat:
 	lodsb
-	cmp al, 0
+	cmp al, 0x0
 	je .done
 	int 10h
 	jmp .repeat
@@ -157,15 +164,15 @@ scan_char:
 	ret
 
 start_string db 'Pressione SPACE para iniciar!', 0x0a, 0x0d, 0
-str_north db '   -', 0x0a, 0x0d, 0
-str_north_open db '   N', 0x0a, 0x0d, 0
-str_east db '   |', 0x0a, 0x0d, 0
-str_east_open db '   E', 0x0a, 0x0d, 0
-str_south db '   -', 0x0a, 0x0d , 0x0a, 0x0d, 0
-str_south_open db '   S', 0x0a, 0x0d, 0x0a, 0x0d,0
-str_west db '|  ', 0
-str_west_open db 'W  ', 0
-end_message db 'FIM DE JOGO!', 0x0a, 0x0d, 0
+str_north db '   -', 0x0a, 0x0d, 0x0
+str_north_open db '   N', 0x0a, 0x0d, 0x0
+str_east db '   |', 0x0a, 0x0d, 0x0
+str_east_open db '   E', 0x0a, 0x0d, 0x0
+str_south db '   -', 0x0a, 0x0d , 0x0a, 0x0d, 0x0
+str_south_open db '   S', 0x0a, 0x0d, 0x0a, 0x0d, 0x0
+str_west db '|  ', 0x0
+str_west_open db 'W  ', 0x0
+end_message db 'FIM DE JOGO!', 0x0a, 0x0d, 0x0
 
 END:
 	mov si, end_message
