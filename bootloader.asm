@@ -1,14 +1,7 @@
 	BITS 16
-	org 0x7c00
-	xor ax, ax
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
-	jmp start
 start:
-	mov ah, 0xe
-	mov bx, 0
+	mov ax, 07C0h
+	mov ds, ax
 	mov si, start_string
 	call print_string
 	call scan_char
