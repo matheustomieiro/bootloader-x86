@@ -1,5 +1,6 @@
 	BITS 16
 start:
+	mov sp, 0x800
 	mov ax, 07C0h
 	mov ds, ax
 	mov si, start_string
